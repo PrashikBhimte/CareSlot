@@ -3,7 +3,6 @@
 # dependencies
 ./web-client-side/node_modules
 /.pnp
-./server-side/.env
 .pnp.js
 
 # testing
@@ -13,6 +12,7 @@
 /build
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local

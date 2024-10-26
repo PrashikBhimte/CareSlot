@@ -225,5 +225,53 @@ def delete_patient():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
+@server.route('/patient/veiw/personal', methods=['GET'])
+def viewPersonalDetails():
+	data = dict(request.get_json())
+	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
+
+	try: 
+		id = data['id']
+		try:
+			cursor.execute(f"SELECT * FROM patient_personal_details WHERE id = {id};")
+			fetched_data = cursor.fetchone()
+			return jsonify(dict(zip(keys, fetched_data))), 200
+		except:
+			return jsonify({"error" : "Data not found for given id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/patient/veiw/medication', methods=['GET'])
+def viewMedDetails():
+	data = dict(request.get_json())
+	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
+
+	try: 
+		id = data['id']
+		try:
+			cursor.execute(f"SELECT * FROM patient_med_details WHERE id = {id};")
+			fetched_data = cursor.fetchall()
+			return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
+		except:
+			return jsonify({"error" : "Data not found for given id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/patient/update/login_details', methods=['POST'])
+def update_patient_login_details():
+	data = dict(request.get_json())
+
+	try:
+		username = str(data['username'])
+		password = str(data['password'])
+		id = data['id']
+		try:
+			cursor.execute(f"UPDATE patient_login SET username = '{username}', password='{password}' WHERE id = {id};")
+			db.commit()
+		except:
+			return jsonify({"error" : "Data not found with given id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
 if __name__ == "__main__":
 	server.run()

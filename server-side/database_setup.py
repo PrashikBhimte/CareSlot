@@ -75,8 +75,7 @@ query6 = """CREATE TABLE patient_med_details (
     date DATE,
     medication VARCHAR(250),
     advise VARCHAR(250),
-    symptoms VARCHAR(250),
-    PRIMARY KEY (id)
+    symptoms VARCHAR(250)
     );
 """
 cursor.execute(query6)
