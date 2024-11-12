@@ -38,10 +38,10 @@ export default function LoginPage() {
       console.log(responce_data['loginSuccess'])
 
       if  (responce_data['loginSuccess'] === 'True') {
-        navigate('/home');
+        navigate(`/users/${responce_data['id']}`);
       }
       else {
-        document.getElementById('errorbox').style.display = "flex";
+        document.getElementById('error_login').style.display = "flex";
       }
     } 
     catch (e) {
@@ -50,7 +50,7 @@ export default function LoginPage() {
   }
 
   const handleClose = () => {
-    document.getElementById('errorbox').style.display = "none";
+    document.getElementById('error_login').style.display = "none";
   }
 
   return (
@@ -60,7 +60,7 @@ export default function LoginPage() {
         <input type='text' name='login_password' placeholder='Password' value={password} onChange={handleChangePassword}/>
         <button onClick={handleClick}>Login</button>
       </form>
-      <div id="errorbox">
+      <div className="errorbox" id='error_login'>
         <p>Username or Password is worng!</p>
         <button onClick={handleClose}>Close</button>
       </div>

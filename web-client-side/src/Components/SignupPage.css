@@ -1,0 +1,79 @@
+#signpage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#signupformotp, #signupformuser {
+    width: 90%;
+    height: 90%;
+    max-width: 700px;
+    max-height: 500px;
+    border-radius: 25px;
+    box-shadow: 8px 8px 25px 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#signupformuser {
+    display: none;
+}
+
+#signpage input {
+    width: 300px;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid black;
+    font-size: 16px;
+}
+
+#signpage button {
+    width: 120px;
+    height: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: blue;
+    color: white;
+    font-size: 16px;
+}
+
+#signpage button:hover {
+    scale: 1.02;
+}
+
+#signpage button {
+    scale: 0.98;
+}
+
+#verifyotp button {
+    background-color: green;
+}
+
+#verifyotp {
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 25px;
+    font-size: 24px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    box-shadow: 8px 8px 25px 1px black;
+}

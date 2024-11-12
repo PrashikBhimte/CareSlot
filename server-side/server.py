@@ -116,7 +116,7 @@ def signup():
 		phone_no = data["phoneNo"]
 		send_otp(phone_no)
 
-		return "all right"
+		return jsonify({ "status" : "all right" }), 200
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -127,8 +127,11 @@ def recive_otp():
 	did_find = False
 
 	data = dict(request.get_json())
+
+	print(data)
+
 	try :
-		recived_otp = data['otp']
+		recived_otp = int(data['otp'])
 		recived_phone_no = data['phoneNo']
 
 		for i in otpAndPhoneNo:
@@ -140,11 +143,11 @@ def recive_otp():
 			if recived_phone_no == _[1] :
 				did_find = True
 				if recived_otp == _[0]:
-					return "sucessfully!"
+					return jsonify({ "status" : "sucessfully!" }), 200
 				else :
-					return "wrong otp!"
+					return jsonify({ "status" : "wrong otp!" }), 200
 		if did_find == False :
-			return "time out!"
+			return jsonify({ "status" : "time out!" }), 200
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -154,10 +157,11 @@ def signup_details():
 	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
 
 	data = dict(request.get_json())
+	print(data)
 	try: 
 		username = str(data['username'])
 		password = str(data['password'])
-		phoneNo = data['phoneNo']
+		phoneNo = int(data['phoneNo'])
 
 		cursor.execute(f"SELECT * FROM patient_login;")
 		login_details = cursor.fetchall()

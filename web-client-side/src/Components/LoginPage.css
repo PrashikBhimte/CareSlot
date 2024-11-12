@@ -51,7 +51,7 @@
     scale: 0.98;
 }
 
-#errorbox {
+.errorbox {
     width: 400px;
     height: 200px;
     position: absolute;
@@ -71,6 +71,6 @@
     box-shadow: 8px 8px 25px 1px black;
 }
 
-#errorbox button {
+.errorbox button {
     background-color: red;
 }
