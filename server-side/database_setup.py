@@ -1,9 +1,15 @@
 import mysql.connector as ms
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
+
+mysql_password = getenv('MYSQL_PASSWORD')
 
 db = ms.connect(
     host = "localhost",
     user = "root",
-    password = "Pra@290603",
+    password = mysql_password,
     database = "HMS",
     ssl_disabled = True
 )

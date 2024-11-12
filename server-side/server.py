@@ -29,10 +29,10 @@ db = ms.connect(
 
 cursor = db.cursor()
 
-def genreate_id():
+def genreate_id(table):
 	is_unique = True
 
-	cursor.execute(f"SELECT * FROM patient_personal_details;")
+	cursor.execute(f"SELECT * FROM {table};")
 	login_details = cursor.fetchall()
 	id = randint(1000, 9999)
 
@@ -43,7 +43,7 @@ def genreate_id():
 	if is_unique :
 		return id
 	else:
-		genreate_id()
+		genreate_id(table)
 
 def send_otp(phone_no):
 	global otpAndPhoneNo
@@ -176,7 +176,7 @@ def signup_details():
 				return jsonify(dict(zip(keys, i))), 200
 			
 		if did_exit == False:
-			id = genreate_id()
+			id = genreate_id('patient_personal_details')
 			cursor.execute(f"INSERT INTO patient_login VALUES ({id}, '{username}', '{password}');")
 			db.commit()
 			cursor.execute(f"INSERT INTO patient_personal_details VALUES ({id}, '', '', NULL, 0, '', '');")
@@ -187,7 +187,7 @@ def signup_details():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
-@server.route('/addpatient', methods=['POST'])
+@server.route('/patient/add', methods=['POST'])
 def add_patient():
 	data = dict(request.get_json())
 
@@ -208,12 +208,12 @@ def add_patient():
 
 @server.route('/addnewid', methods=['GET'])
 def newID():
-	id = genreate_id()
+	id = genreate_id('patient_personal_details')
 	cursor.execute(f"INSERT INTO patient_personal_details VALUES ({id}, '', '', NULL, 0, '', '');")
 	db.commit()
 	return jsonify({"id" : id}), 200
 
-@server.route('/deletepatient', methods=['POST'])
+@server.route('/patient/delete', methods=['POST'])
 def delete_patient():
 	try:
 		id = dict(request.get_json())['id']
@@ -244,7 +244,7 @@ def viewPersonalDetails():
 @server.route('/patient/veiw/medication', methods=['GET'])
 def viewMedDetails():
 	data = dict(request.get_json())
-	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
+	keys = ['id', 'date', 'medication', 'advise', 'symptoms']
 
 	try: 
 		id = data['id']
@@ -271,6 +271,92 @@ def update_patient_login_details():
 		except:
 			return jsonify({"error" : "Data not found with given id!"}), 404
 	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/patient/bookappiontment', methods=['POST'])
+def bookappointment():
+	data = dict(request.get_json())
+
+	id = genreate_id('appointment')
+
+	try :
+		date = data['date']
+		time_slot = data['time_slot']
+		pat_id = int(data['pat_id'])
+		doc_id = int(data['doc_id'])
+
+		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{date}', '{time_slot}', {pat_id}, {doc_id});")
+		db.commit()
+
+		return jsonify({"id" : id}), 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/patient/view/availableslots', methods=['GET'])
+def veiwslots():
+	data = dict(request.get_json())
+	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
+
+	try:
+		date = data['date']
+		doc_id = data['doc_id']
+		try:
+			cursor.execute(f"SELECT * FROM appointment WHERE date = '{date}' AND doc_id = {doc_id}")
+			fetched_data = cursor.fetchone()
+			return jsonify(dict(zip(keys, fetched_data))), 200
+		except:
+			return jsonify({"error" : "Data not found for given doctor id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+	
+@server.route('/patient/view/appointments', methods=['GET'])
+def veiwAppointmentHistory():
+	data = dict(request.get_json())
+	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
+
+	try:
+		id = data['pat_id']
+		try:
+			cursor.execute(f"SELECT * FROM appointment WHERE pat_id = {id};")
+			fetched_data = cursor.fetchone()
+			return jsonify(dict(zip(keys, fetched_data))), 200
+		except:
+			return jsonify({"error" : "Data not found for given id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/doctor/view/appointment', methods=['GET'])
+def veiwAppointments():
+	data = dict(request.get_json())
+	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
+
+	try:
+		date = data['date']
+		try:
+			cursor.execute(f"SELECT * FROM appointment WHERE date = '{date}';")
+			fetched_data = cursor.fetchone()
+			return jsonify(dict(zip(keys, fetched_data))), 200
+		except:
+			return jsonify({"error" : "Data not found for given date!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/doctor/addmedication', methods=['POST'])
+def addMedication() :
+	data = dict(request.get_json())
+
+	try :
+		id = data['id']
+		date = data['date']
+		medication = data['medication']
+		advise = int(data['advise'])
+		symptoms = int(data['symptoms'])
+
+		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{date}', '{medication}', {advise}, {symptoms});")
+		db.commit()
+
+		return jsonify({"id" : id}), 200
+	except :
 		return jsonify({"error" : "Bad request!"}), 400
 
 if __name__ == "__main__":
