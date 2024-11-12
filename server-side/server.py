@@ -5,10 +5,12 @@ from random import randint
 from twilio.rest import Client
 from dotenv import load_dotenv
 from datetime import datetime
+from flask_cors import CORS
 
 load_dotenv()
 
 server = Flask(__name__)
+CORS(server)
 server.debug = True
 mysql_password = getenv('MYSQL_PASSWORD')
 twilio_account_sid = getenv('TWILIO_ACCOUNT_SID')
@@ -66,7 +68,7 @@ def send_otp(phone_no):
 def home():
 	return "Welcome to HMS!"
 
-@server.route('/login', methods=['GET'])
+@server.route('/login', methods=['POST'])
 def login():
 	data = dict(request.get_json())
 
