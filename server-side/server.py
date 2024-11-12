@@ -325,7 +325,7 @@ def veiwAppointmentHistory():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
-@server.route('/doctor/view/appointment', methods=['GET'])
+@server.route('/doctor/view/appointments', methods=['GET'])
 def veiwAppointments():
 	data = dict(request.get_json())
 	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
@@ -352,12 +352,130 @@ def addMedication() :
 		advise = int(data['advise'])
 		symptoms = int(data['symptoms'])
 
-		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{date}', '{medication}', {advise}, {symptoms});")
+		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{date}', '{medication}', '{advise}', '{symptoms}');")
 		db.commit()
 
-		return jsonify({"id" : id}), 200
+		return 200
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/doctor/add_login', methods=['POST'])
+def adminDoctorAdd_login():
+	data = dict(request.get_json())
+
+	try :
+
+		username = data['username']
+		password = data['password']
+
+		id = genreate_id('doctors_login')
+
+		cursor.execute(f"SELECT * FROM doctors_login;")
+		login_details = cursor.fetchall()
+
+		for i in login_details:
+			if username == i[1]:
+				return jsonify({"error" : "Username allready exits!"}), 409
+
+		cursor.execute(f"INSERT INTO doctors_login VALUES ({id}, '{username}', '{password}');")
+		db.commit()
+		
+		return jsonify({"id" : id}), 200
+
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/doctor/add_details', methods=['POST'])
+def adminDoctorAdd_details():
+	data = dict(request.get_json())
+
+	try :
+		id = data['id']
+		name = data['name']
+		gender = data['gender']
+		dob = data['dob']
+		phoneNo = int(data['phoneno'])
+		address = data['address']
+		email = data['email']
+		doj = data['doj']
+		qualification = data['qualification']
+		
+		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}');")
+		db.commit()
+
+		return 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/doctor/delete', methods=['POST'])
+def delete_doctor():
+	try:
+		id = dict(request.get_json())['id']
+		cursor.execute(f"DELETE FROM doctors WHERE id={id}")
+		db.commit()
+		cursor.execute(f"DELETE FROM doctors_login WHERE id={id}")
+		db.commit()
+		return "sucessful!", 200
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/employee/add_details', methods=['POST'])
+def adminEmployeeAdd_details():
+	data = dict(request.get_json())
+
+	try :
+		id = genreate_id('employees')
+		name = data['name']
+		gender = data['gender']
+		dob = data['dob']
+		phoneNo = int(data['phoneno'])
+		address = data['address']
+		email = data['email']
+		doj = data['doj']
+		qualification = data['qualification']
+		designation = data['designation']
+		
+		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}', '{designation}');")
+		db.commit()
+
+		return 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/employee/delete', methods=['POST'])
+def delete_employee():
+	try:
+		id = dict(request.get_json())['id']
+		cursor.execute(f"DELETE FROM employees WHERE id={id}")
+		db.commit()
+		return "sucessful!", 200
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/admin/add_login', methods=['POST'])
+def adminAdd_login():
+	data = dict(request.get_json())
+
+	try :
+		username = data['username']
+		password = data['password']
+
+		cursor.execute(f"SELECT * FROM emp_login;")
+		login_details = cursor.fetchall()
+
+		for i in login_details:
+			if username == i[1]:
+				return jsonify({"error" : "Username allready exits!"}), 409
+
+		cursor.execute(f"INSERT INTO emp_login VALUES ('{username}', '{password}', 'R');")
+		db.commit()
+		
+		return jsonify({"id" : id}), 200
+
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+
 
 if __name__ == "__main__":
 	server.run()
