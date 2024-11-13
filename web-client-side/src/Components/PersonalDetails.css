@@ -1,0 +1,102 @@
+#personaldetails {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#personaldetailsform {
+    width: 90%;
+    height: 90%;
+    max-width: 700px;
+    /* max-height: 500px; */
+    border-radius: 25px;
+    box-shadow: 8px 8px 25px 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#personaldetailsform label {
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#personaldetailsform label:nth-of-type(2) label {
+    width: auto;
+}
+
+#personaldetailsform label:nth-of-type(2) div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 30px;
+}
+
+#personaldetailsform input, #personaldetailsform textarea {
+    width: 300px;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid black;
+    font-size: 16px;
+}
+
+#personaldetailsform label:nth-of-type(2) input {
+    width: 50px;
+    height: 10px;
+    font-size: 2px;
+}
+
+#personaldetailsform button {
+    width: 120px;
+    height: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: blue;
+    color: white;
+    font-size: 16px;
+}
+
+#personaldetailsform button:hover {
+    scale: 1.02;
+}
+
+#personaldetailsform button {
+    scale: 0.98;
+}
+
+#personaldetailsform input:invalid, #personaldetailsform textarea:invalid {
+    border-bottom-color:  red;
+}
+
+#personaldetailsform input:valid, #personaldetailsform textarea:valid {
+    border-bottom-color:  green;
+}
+
+#personaldetailsform select {
+    width: 70px;
+    height: 25px;
+    border: none;
+    background-color: white;
+    border-bottom: 2px solid black;
+}
+
+#personaldetailsform label:nth-of-type(3) div {
+    width: 65%;
+    height: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

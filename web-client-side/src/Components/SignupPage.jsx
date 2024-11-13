@@ -115,7 +115,7 @@ export default function SignupPage() {
             }
         
             console.log(responce_data);
-            naviagte(`/users/${responce_data['id']}`);
+            naviagte(`/users/${responce_data['id']}/personaldetails`);
         }
         catch (error) {
             console.log(error)
@@ -125,16 +125,17 @@ export default function SignupPage() {
     const handleCloseUsernameError = (e) => {
         e.preventDefault();
         document.getElementById('username_error').style.display = "none";
+        document.getElementById('verifyotp').style.display = 'none';
     }
 
 
   return (
     <section id='signpage'>
         <form id='signupformotp'>
-            <input type='text' name='signpu_phoneno' placeholder='Phone Number' value={phoneNo} onChange={handelChangePhoneNo}/>
-            <button onClick={sendOtp}>Send OTP</button>
+            <input required type='number' min={1000000000} max={9999999999} name='signpu_phoneno' placeholder='Phone Number' value={phoneNo} onChange={handelChangePhoneNo}/>
+            <button onClick={sendOtp} type='submit'>Send OTP</button>
             <div id="verifyotp">
-                <input type='text' name='signup_otp' placeholder='OTP' value={otp} onChange={handleChangeOtp} />
+                <input required type='text' name='signup_otp' placeholder='OTP' value={otp} onChange={handleChangeOtp} />
                 <button onClick={handleVerify}>Verify</button>
             </div>
         </form>
@@ -143,9 +144,9 @@ export default function SignupPage() {
             <button onClick={handleClose}>Close</button>
         </div>
         <form id="signupformuser">
-            <input type='text' name='signup_username' placeholder='Username' value={username} onChange={handleChangeUsername}/>
-            <input type='text' name='signup_password' placeholder='Password' value={password} onChange={handleChangePassword}/>
-            <button onClick={handleClick}>Signup</button>
+            <input required type='text' name='signup_username' placeholder='Username' value={username} onChange={handleChangeUsername}/>
+            <input required type='password' name='signup_password' placeholder='Password' value={password} onChange={handleChangePassword}/>
+            <button type='submit' onClick={handleClick}>Signup</button>
         </form>
         <div className="errorbox" id='username_error'>
             <p>Username already exits...</p>

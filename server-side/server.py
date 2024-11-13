@@ -196,6 +196,7 @@ def signup_details():
 @server.route('/patient/add', methods=['POST'])
 def add_patient():
 	data = dict(request.get_json())
+	print(data)
 
 	try:
 		id = int(data['id'])
@@ -208,7 +209,7 @@ def add_patient():
 
 		cursor.execute(f"UPDATE patient_personal_details SET name='{name}', gender='{gender}', dob='{dob}', phoneNo={phoneNo}, address='{address}', email='{email}' WHERE id={id}")
 		db.commit()
-		return "sucessful!", 200
+		return jsonify({ "status" : "sucessful!" }), 200
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -231,7 +232,7 @@ def delete_patient():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
-@server.route('/patient/veiw/personal', methods=['GET'])
+@server.route('/patient/veiw/personal', methods=['POST'])
 def viewPersonalDetails():
 	data = dict(request.get_json())
 	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']

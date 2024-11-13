@@ -56,9 +56,9 @@ export default function LoginPage() {
   return (
     <section id='loginpage'>
       <form id="loginbox">
-        <input type='text' name='login_username' placeholder='Username' value={username} onChange={handleChangeUsername}/>
-        <input type='text' name='login_password' placeholder='Password' value={password} onChange={handleChangePassword}/>
-        <button onClick={handleClick}>Login</button>
+        <input required type='text' name='login_username' placeholder='Username' value={username} onChange={handleChangeUsername}/>
+        <input required type='password' name='login_password' placeholder='Password' value={password} onChange={handleChangePassword}/>
+        <button type='submit' onClick={handleClick}>Login</button>
       </form>
       <div className="errorbox" id='error_login'>
         <p>Username or Password is worng!</p>
