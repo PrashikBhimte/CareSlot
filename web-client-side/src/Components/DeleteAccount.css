@@ -1,0 +1,42 @@
+#deleteaccount {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#confiromedelete {
+    width: 90%;
+    padding: 50px;
+    max-width: 700px;
+    /* max-height: 500px; */
+    border-radius: 25px;
+    box-shadow: 8px 8px 25px 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+#confiromedelete button {
+    width: 120px;
+    height: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+}
+
+#confiromedelete button:hover {
+    scale: 1.02;
+}
+
+#confiromedelete button:active {
+    scale: 0.98;
+}

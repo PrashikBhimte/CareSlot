@@ -72,5 +72,17 @@
 }
 
 .errorbox button {
+    width: 120px;
+    height: 30px;
+    color: white;
+    border: none;
     background-color: red;
+}
+
+.errorbox button:hover {
+    scale: 1.02;
+}
+
+.errorbox button:active {
+    scale: 0.98;
 }

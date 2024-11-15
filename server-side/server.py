@@ -81,7 +81,7 @@ def login():
 					if data['password'] == i[2]:
 						return jsonify({"loginSuccess" : "True", "id" : i[0]})
 					else:
-						return jsonify({"loginSuccess" : "False"})
+						return jsonify({"loginSuccess" : "False"}), 404
 			return jsonify({"loginSuccess" : "False"})
 		elif data['role'] == 'patient':
 			cursor.execute(f"SELECT * FROM patient_login;")
@@ -220,7 +220,7 @@ def newID():
 	db.commit()
 	return jsonify({"id" : id}), 200
 
-@server.route('/patient/delete', methods=['DELETE'])
+@server.route('/patient/delete', methods=['POST'])
 def delete_patient():
 	try:
 		id = dict(request.get_json())['id']
@@ -228,7 +228,7 @@ def delete_patient():
 		db.commit()
 		cursor.execute(f"DELETE FROM patient_login WHERE id={id}")
 		db.commit()
-		return "sucessful!", 200
+		return jsonify({ "status" : "sucessful!" }), 200
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -314,7 +314,7 @@ def deleteAppiontment():
 		return jsonify({"error" : "Bad request!"}), 400
 
 
-@server.route('/patient/view/availableslots', methods=['GET'])
+@server.route('/patient/view/availableslots', methods=['POST'])
 def veiwslots():
 	data = dict(request.get_json())
 	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
@@ -331,7 +331,7 @@ def veiwslots():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 	
-@server.route('/patient/view/appointment/history', methods=['GET'])
+@server.route('/patient/view/appointment/history', methods=['POST'])
 def veiwAppointmentHistory():
 	data = dict(request.get_json())
 	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
@@ -340,7 +340,7 @@ def veiwAppointmentHistory():
 		id = data['pat_id']
 		try:
 			cursor.execute(f"SELECT * FROM appointment WHERE pat_id = {id};")
-			fetched_data = cursor.fetchone()
+			fetched_data = cursor.fetchall()
 			return jsonify(dict(zip(keys, fetched_data))), 200
 		except:
 			return jsonify({"error" : "Data not found for given id!"}), 404
@@ -372,13 +372,35 @@ def addMedication() :
 		id = data['id']
 		date = data['date']
 		medication = data['medication']
-		advise = int(data['advise'])
-		symptoms = int(data['symptoms'])
+		advise = data['advise']
+		symptoms = data['symptoms']
 
-		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{date}', '{medication}', '{advise}', '{symptoms}');")
+		cursor.execute(f"INSERT INTO patient_med_details VALUES ({id}, '{date}', '{medication}', '{advise}', '{symptoms}');")
 		db.commit()
 
-		return 200
+		return jsonify({ "status" : "successful!" }), 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+
+@server.route('/doctor/all', methods=['GET'])
+def fetchAllDoctors():
+	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email', 'doj', 'qualification']
+
+	try :
+		cursor.execute("SELECT * FROM doctors;")
+		fetched_data = cursor.fetchall()
+		return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+	
+@server.route('/employees/all', methods=['GET'])
+def fetchAllEmployess():
+	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email', 'doj', 'qualification', 'designation']
+
+	try :
+		cursor.execute("SELECT * FROM employees;")
+		fetched_data = cursor.fetchall()
+		return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -413,7 +435,7 @@ def adminDoctorAdd_details():
 	data = dict(request.get_json())
 
 	try :
-		id = data['id']
+		id = int(data['id'])
 		name = data['name']
 		gender = data['gender']
 		dob = data['dob']
@@ -423,10 +445,32 @@ def adminDoctorAdd_details():
 		doj = data['doj']
 		qualification = data['qualification']
 		
-		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}');")
+		cursor.execute(f"INSERT INTO doctors VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}');")
 		db.commit()
 
-		return 200
+		return jsonify({ "status" : "successful!" }), 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+	
+@server.route('/admin/doctor/update_details', methods=['POST'])
+def adminDoctorUpdate_details():
+	data = dict(request.get_json())
+
+	try :
+		id = int(data['id'])
+		name = data['name']
+		gender = data['gender']
+		dob = data['dob']
+		phoneNo = int(data['phoneno'])
+		address = data['address']
+		email = data['email']
+		doj = data['doj']
+		qualification = data['qualification']
+		
+		cursor.execute(f"UPDATE doctors SET name='{name}', gender='{gender}', dob='{dob}', phoneNo={phoneNo}, address='{address}', email='{email}', doj='{doj}', qualification='{qualification}' WHERE doc_id = {id}")
+		db.commit()
+
+		return jsonify({ "status" : "successful!" }), 200
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -434,9 +478,9 @@ def adminDoctorAdd_details():
 def delete_doctor():
 	try:
 		id = dict(request.get_json())['id']
-		cursor.execute(f"DELETE FROM doctors WHERE id={id}")
+		cursor.execute(f"DELETE FROM doctors WHERE doc_id={id}")
 		db.commit()
-		cursor.execute(f"DELETE FROM doctors_login WHERE id={id}")
+		cursor.execute(f"DELETE FROM doctors_login WHERE doc_id={id}")
 		db.commit()
 		return "sucessful!", 200
 	except:
@@ -458,10 +502,34 @@ def adminEmployeeAdd_details():
 		qualification = data['qualification']
 		designation = data['designation']
 		
-		cursor.execute(f"INSERT INTO appointment VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}', '{designation}');")
+		cursor.execute(f"INSERT INTO employees VALUES ({id}, '{name}', '{gender}', '{dob}', {phoneNo}, '{address}', '{email}', '{doj}', '{qualification}', '{designation}');")
 		db.commit()
 
-		return "sucessful!", 200
+		return jsonify({ "status" : "successful!" }), 200
+	except :
+		return jsonify({"error" : "Bad request!"}), 400
+	
+
+@server.route('/admin/employee/update_details', methods=['POST'])
+def adminEmployeeUpdate_details():
+	data = dict(request.get_json())
+
+	try :
+		id = int(data['id'])
+		name = data['name']
+		gender = data['gender']
+		dob = data['dob']
+		phoneNo = int(data['phoneno'])
+		address = data['address']
+		email = data['email']
+		doj = data['doj']
+		qualification = data['qualification']
+		designation = data['designation']
+		
+		cursor.execute(f"UPDATE employees SET name='{name}', gender='{gender}', dob='{dob}', phoneNo={phoneNo}, address='{address}', email='{email}', doj='{doj}', qualification='{qualification}', designation='{designation}' WHERE emp_id = {id}")
+		db.commit()
+
+		return jsonify({ "status" : "successful!" }), 200
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
 
@@ -469,7 +537,7 @@ def adminEmployeeAdd_details():
 def delete_employee():
 	try:
 		id = dict(request.get_json())['id']
-		cursor.execute(f"DELETE FROM employees WHERE id={id}")
+		cursor.execute(f"DELETE FROM employees WHERE emp_id={id}")
 		db.commit()
 		return "sucessful!", 200
 	except:
@@ -493,7 +561,7 @@ def adminAdd_login():
 		cursor.execute(f"INSERT INTO emp_login VALUES ('{username}', '{password}', 'R');")
 		db.commit()
 		
-		return jsonify({"id" : id}), 200
+		return jsonify({ "status" : "successful!" }), 200
 
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
@@ -518,10 +586,10 @@ def deleteAdminLogin():
 	try : 
 		username = data['username']
 
-		cursor.execute(f"DELETE FROM employees WHERE username={username};")
+		cursor.execute(f"DELETE FROM emp_login WHERE username='{username}';")
 		db.commit()
 
-		return "sucessful!", 200
+		return jsonify({ "status" : "successful!" }), 200
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
