@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from functions import clearFrame, initFrame
+from functions import clearFrame
 import requests
 
 def setUsernameAndPassword(frame):
@@ -18,7 +18,6 @@ def setUsernameAndPassword(frame):
             if responce.status_code == 200 :
                 messagebox.showinfo(title="Successful!", message="Username and Password are set successfully!")
                 clearFrame(frame)
-                initFrame(frame)
             elif responce.status_code == 409:
                 messagebox.showerror(title="Unsuccessful!", message="Username Already exits!")
             else :

@@ -1,5 +1,5 @@
 import tkinter as tk
-from functions import clearFrame, initFrame
+from functions import clearFrame
 import requests
 from tkinter import messagebox
 
@@ -15,7 +15,7 @@ def showDetails(frame, res_name):
                 })
                 if responce.status_code == 200 :
                     messagebox.showinfo(title="Successfull!", message="Data is Deleted successfully!")
-                    initFrame(frame)
+                    clearFrame(frame)
                 else :
                     messagebox.showerror(title="Unsuccessful!", message="Unadle to Delete")
             except :
@@ -37,11 +37,15 @@ def searchEmployeeToDelete(frame):
     except :
         messagebox.showwarning(title="Unsuccessful!", message="network error!")
 
-    tk.Label(frame, text="Doctor Name: ").grid(column=0, row=2, padx=30, pady=15)
-    employeename = tk.StringVar(frame)
-    employeename.set('Select Name of doctor')
-    employeename_dropdown = tk.OptionMenu(frame, employeename, *employee_names)
-    employeename_dropdown.grid(row=2, column=1)
-    employeename_dropdown.config(width=30)
+    if len(responce_data) == 0 :
+            messagebox.showerror(title="Empty Data", message="There are no employees available!")
+            clearFrame(frame)
+    else:
+        tk.Label(frame, text="Doctor Name: ").grid(column=0, row=2, padx=30, pady=15)
+        employeename = tk.StringVar(frame)
+        employeename.set('Select Name of doctor')
+        employeename_dropdown = tk.OptionMenu(frame, employeename, *employee_names)
+        employeename_dropdown.grid(row=2, column=1)
+        employeename_dropdown.config(width=30)
 
-    tk.Button(frame, text="Submit", width=10, command=lambda : showDetails(frame, str(employeename.get()))).grid(column=1, row=9)
+        tk.Button(frame, text="Submit", width=10, command=lambda : showDetails(frame, str(employeename.get()))).grid(column=1, row=9)

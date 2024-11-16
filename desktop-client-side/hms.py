@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 from adminScreen import adminScreen
+from receptionistScreen import receptionistScreen
+from doctorScreen import doctorScreen
 
 def login():
     username = userName.get()
@@ -19,14 +21,13 @@ def login():
     if responce_data['loginSuccess'] == 'True':
         window.destroy() 
         if role == "doctor":
-            doctor_window = tk.Tk()
-            doctor_window.title('Doctor login')
+            doc_id = responce_data['id']
+            doctorScreen(doc_id)
         elif role == "admin" or role == "receptionist":
             if responce_data['authority'] == 'A':
                 adminScreen()
             elif responce_data['authority'] == 'R':
-                receptionist_window = tk.Tk()
-                receptionist_window.title('receptionist login')
+                receptionistScreen()
 
     else:
         messagebox.showerror("Error", "Invalid username or password")

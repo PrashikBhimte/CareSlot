@@ -1,5 +1,5 @@
 import tkinter as tk
-from functions import clearFrame, is_aplha_with_space, initFrame
+from functions import clearFrame, is_aplha_with_space
 import requests
 from tkinter import messagebox
 
@@ -33,7 +33,7 @@ def setPersonalDeatils(frame):
 
                         if responce.status_code == 200 :
                             messagebox.showinfo(title="Successful!", message="Employees Details are set successfully!")
-                            initFrame(frame)
+                            clearFrame(frame)
                     except :
                         messagebox.showwarning(title="Unsuccessful!", message="network error!")
 

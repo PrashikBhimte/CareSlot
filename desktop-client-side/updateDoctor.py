@@ -33,7 +33,7 @@ def updateDetails(frame, id):
 
                         if responce.status_code == 200 :
                             messagebox.showinfo(title="Successful!", message="Personal Details are updated successfully!")
-                            initFrame(frame)
+                            clearFrame(frame)
                     except :
                         messagebox.showwarning(title="Unsuccessful!", message="network error!")
 
@@ -163,16 +163,20 @@ def updateDoctor(frame):
 
         else :
             messagebox.showwarning(title="Unsuccessful!", message="Unadle to fetch data!")
-            initFrame(frame)
+            clearFrame(frame)
     except :
         messagebox.showwarning(title="Unsuccessful!", message="network error!")
-        initFrame(frame)
+        clearFrame(frame)
 
-    tk.Label(frame, text="Doctor Name: ").grid(column=0, row=2, padx=30, pady=15)
-    doctorname = tk.StringVar(frame)
-    doctorname.set('Select Name of doctor')
-    doctorname_dropdown = tk.OptionMenu(frame, doctorname, *doctor_names)
-    doctorname_dropdown.grid(row=2, column=1)
-    doctorname_dropdown.config(width=30)
+    if len(responce_data) == 0 :
+            messagebox.showerror(title="Empty Data", message="There are no doctors available!")
+            clearFrame(frame)
+    else:
+        tk.Label(frame, text="Doctor Name: ").grid(column=0, row=2, padx=30, pady=15)
+        doctorname = tk.StringVar(frame)
+        doctorname.set('Select Name of doctor')
+        doctorname_dropdown = tk.OptionMenu(frame, doctorname, *doctor_names)
+        doctorname_dropdown.grid(row=2, column=1)
+        doctorname_dropdown.config(width=30)
 
-    tk.Button(frame, text="Submit", width=10, command=lambda : fillDetails(frame, str(doctorname.get()))).grid(column=1, row=9)
+        tk.Button(frame, text="Submit", width=10, command=lambda : fillDetails(frame, str(doctorname.get()))).grid(column=1, row=9)

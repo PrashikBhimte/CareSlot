@@ -238,7 +238,7 @@ def viewPersonalDetails():
 	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
 
 	try: 
-		id = data['id']
+		id = int(data['id'])
 		try:
 			cursor.execute(f"SELECT * FROM patient_personal_details WHERE id = {id};")
 			fetched_data = cursor.fetchone()
@@ -318,14 +318,19 @@ def deleteAppiontment():
 def veiwslots():
 	data = dict(request.get_json())
 	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
+	possiable_slots = ['10:00 to 10:15', '10:15 to 10:30', '10:30 to 10:45', '10:45 to 11:00', '11:00 to 11:15', '11:15 to 11:30', '11:30 to 11:45', '11:45 to 12:00', '12:00 to 12:15', '12:15 to 12:30', '12:30 to 12:45', '12:45 to 13:00', '13:00 to 13:15', '13:15 to 13:30', '13:30 to 13:45', '13:45 to 14:00', '14:00 to 14:15', '14:15 to 14:30', '14:30 to 14:45', '14:45 to 15:00', '15:00 to 15:15', '15:15 to 15:30', '15:30 to 15:45', '15:45 to 16:00', '16:00 to 16:15', '16:15 to 16:30', '16:30 to 16:45', '16:45 to 17:00']
 
 	try:
 		date = data['date']
-		doc_id = data['doc_id']
+		doc_id = int(data['doc_id'])
 		try:
 			cursor.execute(f"SELECT * FROM appointment WHERE date = '{date}' AND doc_id = {doc_id}")
-			fetched_data = cursor.fetchone()
-			return jsonify(dict(zip(keys, fetched_data))), 200
+			fetched_data = cursor.fetchall()
+			
+			for i in fetched_data:
+				possiable_slots.remove(i[2])
+
+			return jsonify({ "available_slots" : possiable_slots }), 200
 		except:
 			return jsonify({"error" : "Data not found for given doctor id!"}), 404
 	except:
@@ -347,18 +352,18 @@ def veiwAppointmentHistory():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
-@server.route('/doctor/view/appointments', methods=['GET'])
+@server.route('/doctor/view/appointments', methods=['POST'])
 def veiwAppointments():
 	data = dict(request.get_json())
 	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
 
 	try:
 		date = data['date']
-		id = data['doc_id']
+		id = int(data['doc_id'])
 		try:
-			cursor.execute(f"SELECT * FROM appointment WHERE date = '{date}' AND doc_id = {id};")
-			fetched_data = cursor.fetchone()
-			return jsonify(dict(zip(keys, fetched_data))), 200
+			cursor.execute(f"SELECT * FROM appointment WHERE date='{date}' AND doc_id={id};")
+			fetched_data = cursor.fetchall()
+			return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
 		except:
 			return jsonify({"error" : "Data not found for given date!"}), 404
 	except:
@@ -369,7 +374,7 @@ def addMedication() :
 	data = dict(request.get_json())
 
 	try :
-		id = data['id']
+		id = int(data['id'])
 		date = data['date']
 		medication = data['medication']
 		advise = data['advise']
@@ -571,7 +576,7 @@ def adminViewAllusername():
 
 	try :
 
-		cursor.execute(f"SELECT * FROM emp_login;")
+		cursor.execute(f"SELECT * FROM emp_login WHERE authority='R';")
 		fetched_data = cursor.fetchall()
 
 		return jsonify({ 'usernames' : [i[0] for i in fetched_data ]}), 200
@@ -586,11 +591,22 @@ def deleteAdminLogin():
 	try : 
 		username = data['username']
 
-		cursor.execute(f"DELETE FROM emp_login WHERE username='{username}';")
+		cursor.execute(f"DELETE FROM emp_login WHERE username='{username}' AND authority='R';")
 		db.commit()
 
 		return jsonify({ "status" : "successful!" }), 200
 	except:
+		return jsonify({"error" : "Bad request!"}), 400
+	
+@server.route('/patient/all', methods=['GET'])
+def fetchAllPatients():
+	keys = ['id', 'name', 'gender', 'dob', 'phoneNo', 'address', 'email']
+
+	try :
+		cursor.execute("SELECT * FROM patient_personal_details;")
+		fetched_data = cursor.fetchall()
+		return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
+	except :
 		return jsonify({"error" : "Bad request!"}), 400
 
 if __name__ == "__main__":

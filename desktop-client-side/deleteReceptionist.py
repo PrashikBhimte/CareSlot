@@ -1,5 +1,5 @@
 import tkinter as tk
-from functions import clearFrame, initFrame
+from functions import clearFrame
 import requests
 from tkinter import messagebox
 
@@ -8,11 +8,11 @@ def showDetails(frame, username):
 
     try :
         responce = requests.delete('http://localhost:5000/admin/login/delete', json={
-            "username" : username
+            "username" : username,
         })
         if responce.status_code == 200 :
             messagebox.showinfo(title="Successfull!", message="Data is Deleted successfully!")
-            initFrame(frame)
+            clearFrame(frame)
         else :
             messagebox.showerror(title="Unsuccessful!", message="Unadle to Delete")
     except :
@@ -34,11 +34,15 @@ def searchReceptionistToDelete(frame):
     except :
         messagebox.showwarning(title="Unsuccessful!", message="network error!")
 
-    tk.Label(frame, text="Receptionist Name: ").grid(column=0, row=2, padx=30, pady=15)
-    receptionistname = tk.StringVar(frame)
-    receptionistname.set('Select Name of Receptionist')
-    receptionistname_dropdown = tk.OptionMenu(frame, receptionistname, *receptionist_names)
-    receptionistname_dropdown.grid(row=2, column=1)
-    receptionistname_dropdown.config(width=30)
+    if len(receptionist_names) == 0 :
+            messagebox.showerror(title="Empty Data", message="There are no receptionists available!")
+            clearFrame(frame)
+    else:
+        tk.Label(frame, text="Receptionist Name: ").grid(column=0, row=2, padx=30, pady=15)
+        receptionistname = tk.StringVar(frame)
+        receptionistname.set('Select Name of Receptionist')
+        receptionistname_dropdown = tk.OptionMenu(frame, receptionistname, *receptionist_names)
+        receptionistname_dropdown.grid(row=2, column=1)
+        receptionistname_dropdown.config(width=30)
 
-    tk.Button(frame, text="Submit", width=10, command=lambda : showDetails(frame, str(receptionistname.get()))).grid(column=1, row=9)
+        tk.Button(frame, text="Submit", width=10, command=lambda : showDetails(frame, str(receptionistname.get()))).grid(column=1, row=9)

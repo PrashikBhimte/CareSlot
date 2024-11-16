@@ -1,5 +1,5 @@
 import tkinter as tk
-from functions import clearFrame, initFrame, is_aplha_with_space
+from functions import clearFrame, is_aplha_with_space
 import requests
 from tkinter import messagebox
 
@@ -35,7 +35,7 @@ def updateDetails(frame, id):
 
                         if responce.status_code == 200 :
                             messagebox.showinfo(title="Successful!", message="Personal Details are updated successfully!")
-                            initFrame(frame)
+                            clearFrame(frame)
                     except :
                         messagebox.showwarning(title="Unsuccessful!", message="network error!")
 
@@ -171,16 +171,20 @@ def updateEmployee(frame):
 
         else :
             messagebox.showwarning(title="Unsuccessful!", message="Unadle to fetch data!")
-            initFrame(frame)
+            clearFrame(frame)
     except :
         messagebox.showwarning(title="Unsuccessful!", message="network error!")
-        initFrame(frame)
+        clearFrame(frame)
 
-    tk.Label(frame, text="Employee Name: ").grid(column=0, row=2, padx=30, pady=15)
-    employeename = tk.StringVar(frame)
-    employeename.set('Select Name of Employee')
-    employeename_dropdown = tk.OptionMenu(frame, employeename, *employee_names)
-    employeename_dropdown.grid(row=2, column=1)
-    employeename_dropdown.config(width=30)
+    if len(responce_data) == 0 :
+            messagebox.showerror(title="Empty Data", message="There are no employees available!")
+            clearFrame(frame)
+    else:
+        tk.Label(frame, text="Employee Name: ").grid(column=0, row=2, padx=30, pady=15)
+        employeename = tk.StringVar(frame)
+        employeename.set('Select Name of Employee')
+        employeename_dropdown = tk.OptionMenu(frame, employeename, *employee_names)
+        employeename_dropdown.grid(row=2, column=1)
+        employeename_dropdown.config(width=30)
 
-    tk.Button(frame, text="Submit", width=10, command=lambda : fillDetails(frame, str(employeename.get()))).grid(column=1, row=9)
+        tk.Button(frame, text="Submit", width=10, command=lambda : fillDetails(frame, str(employeename.get()))).grid(column=1, row=9)

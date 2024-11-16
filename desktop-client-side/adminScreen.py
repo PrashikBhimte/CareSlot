@@ -46,9 +46,13 @@ def adminScreen():
     sideFrame = tk.Frame(root, width=2*(screen_width//3), height=screen_height)
     sideFrame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-    mainframe(frame, sideFrame)
-    initFrame(sideFrame)
+    topFrame = tk.Frame(sideFrame, width=2*(screen_width//3), height=screen_height//3)
+    topFrame.pack(side=tk.TOP, fill=tk.NONE)
+
+    bottomFrame = tk.Frame(sideFrame, width=2*(screen_width//3), height=2*(screen_height//3))
+    bottomFrame.pack(side=tk.BOTTOM, fill=tk.NONE, expand=True)
+
+    mainframe(frame, bottomFrame)
+    initFrame(topFrame)
 
     root.mainloop()
-
-adminScreen()
