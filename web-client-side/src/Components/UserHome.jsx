@@ -9,25 +9,6 @@ export default function UserHome() {
     const { userId } = useParams();
 
     const [ name, setName ] = useState();
-    const [ gender, setGender ] = useState();
-    const [ dob, setDob ] = useState();
-    const [ phoneNo, setPhoneNo ] = useState();
-    const [ address, setAddress ] = useState();
-    const [ email, setEmail ] = useState();
-
-    const [ year, setYear ] = useState();
-    const [ month, setMonth ] = useState()
-    const [ day, setDay ] = useState();
-
-    const years = [];
-    for (let year = 1990; year <= 2024; year++) {
-        years.push(year);
-    }
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const days = [];
-    for (let day = 1; day <=31; day++) {
-        days.push(day);
-    }
 
     useEffect( () => {
       async function fetchData() {
@@ -45,15 +26,6 @@ export default function UserHome() {
               const responce_data = await responce.json();
 
               setName(responce_data['name']);
-              setGender(responce_data['gender']);
-              setDob(responce_data['dob']);
-              const x = responce_data['dob'].split(" ")
-              setYear(x[3]);
-              setDay(x[1]);
-              setMonth(x[2]);
-              setPhoneNo(responce_data['phoneNo']);
-              setAddress(responce_data['address']);
-              setEmail(responce_data['email']);
 
           }
           catch (error) {
@@ -67,8 +39,20 @@ export default function UserHome() {
     navigate(`/users/${userId}/accountdetails`);
   }
 
+  const clickBookAppointment = () => {
+    navigate(`/users/${userId}/bookappointment`);
+  }
+
+  const clickCancelAppointment = () => {
+    navigate(`/users/${userId}/cancelappointment`);
+  }
+
+  const clickHistoryMedication = () => {
+    navigate(`/users/${userId}/medicationhistory`);
+  }
+
   const clickHistoryAppointment = () => {
-    navigate(`/user/${userId}/appointmenthistory`);
+    navigate(`/users/${userId}/appointmenthistory`);
   }
 
   const clickDelete = () => {
@@ -80,8 +64,9 @@ export default function UserHome() {
         <h1>Hello {name} </h1>
         <div id='useroptions'>
           <button onClick={clickAccount}>My Account</button>
-          <button>Book Appointment</button>
-          <button>Veiw Medical History</button>
+          <button onClick={clickBookAppointment}>Book Appointment</button>
+          <button onClick={clickCancelAppointment}>Cancel Appointment</button>
+          <button onClick={clickHistoryMedication}>Veiw Medical History</button>
           <button onClick={clickHistoryAppointment}>Veiw Appointment History</button>
           <button onClick={clickDelete}>Delete My Account</button>
         </div>

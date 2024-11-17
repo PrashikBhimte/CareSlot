@@ -8,6 +8,9 @@ import HomePage from './Components/HomePage';
 import UserAccount from './Components/UserAccount';
 import DeleteAccount from './Components/DeleteAccount';
 import AppointmentHistory from './Components/AppointmentHistory';
+import BookAppointment from './Components/BookAppointment';
+import MedicalHistory from './Components/MedicalHistory';
+import CancelAppointment from './Components/CancelAppointment';
 
 function App() {
   return (
@@ -20,7 +23,10 @@ function App() {
       <Route path='/users/:userId/personaldetails' element={<PersonalDetails />} />
       <Route path='/users/:userId/accountdetails' element={<UserAccount />} />
       <Route path='/users/:userId/deleteaccount' element={<DeleteAccount />} />
-      <Route path='/user/:userId/appointmenthistory' element={<AppointmentHistory />} />
+      <Route path='/users/:userId/appointmenthistory' element={<AppointmentHistory />} />
+      <Route path='/users/:userId/medicationhistory' element={<MedicalHistory />} />
+      <Route path='/users/:userId/bookappointment' element={<BookAppointment />} />
+      <Route path='/users/:userId/cancelappointment' element={<CancelAppointment />} />
     </Routes>
   );
 }

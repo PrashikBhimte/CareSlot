@@ -10,7 +10,10 @@ from flask_cors import CORS
 load_dotenv()
 
 server = Flask(__name__)
-CORS(server)
+CORS(server,
+	origins="http://localhost:3000", 
+	methods=['POST', "GET", "DELETE"]
+)
 server.debug = True
 mysql_password = getenv('MYSQL_PASSWORD')
 twilio_account_sid = getenv('TWILIO_ACCOUNT_SID')
@@ -71,7 +74,7 @@ def home():
 @server.route('/login', methods=['POST'])
 def login():
 	data = dict(request.get_json())
-
+	print(data)
 	try: 
 		if data['role'] == 'doctor' :
 			cursor.execute(f"SELECT * FROM doctors_login;")
@@ -89,6 +92,7 @@ def login():
 			for i in login_details:
 				if data['username'] == i[1]:
 					if data['password'] == i[2]:
+						print(data)
 						return jsonify({"loginSuccess" : "True", "id" : i[0]})
 					else:
 						return jsonify({"loginSuccess" : "False"})
@@ -248,7 +252,7 @@ def viewPersonalDetails():
 	except:
 		return jsonify({"error" : "Bad request!"}), 400
 
-@server.route('/patient/veiw/medication', methods=['GET'])
+@server.route('/patient/veiw/medication', methods=['POST'])
 def viewMedDetails():
 	data = dict(request.get_json())
 	keys = ['id', 'date', 'medication', 'advise', 'symptoms']
@@ -298,6 +302,22 @@ def bookappointment():
 		return jsonify({"id" : id}), 200
 	except :
 		return jsonify({"error" : "Bad request!"}), 400
+	
+@server.route('/patient/view/appointment/cancel', methods=['POST'])
+def veiwAppointmentAbleToCancel():
+	data = dict(request.get_json())
+	keys = ['app_id', 'date', 'time_slot', 'pat_id', 'doc_id']
+
+	try:
+		id = data['pat_id']
+		try:
+			cursor.execute(f"SELECT * FROM appointment WHERE pat_id = {id} AND date >= CURDATE();")
+			fetched_data = cursor.fetchall()
+			return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
+		except:
+			return jsonify({"error" : "Data not found for given id!"}), 404
+	except:
+		return jsonify({"error" : "Bad request!"}), 400
 
 @server.route('/patient/appiontment/cancel', methods=['DELETE'])
 def deleteAppiontment():
@@ -306,7 +326,7 @@ def deleteAppiontment():
 	try : 
 		id = data['app_id']
 
-		cursor.execute(f"DELETE FROM appointment WHERE username={id};")
+		cursor.execute(f"DELETE FROM appointment WHERE app_id={id};")
 		db.commit()
 
 		return jsonify({"app_id" : id}), 200
@@ -323,10 +343,11 @@ def veiwslots():
 	try:
 		date = data['date']
 		doc_id = int(data['doc_id'])
+		
 		try:
 			cursor.execute(f"SELECT * FROM appointment WHERE date = '{date}' AND doc_id = {doc_id}")
 			fetched_data = cursor.fetchall()
-			
+
 			for i in fetched_data:
 				possiable_slots.remove(i[2])
 
@@ -346,7 +367,7 @@ def veiwAppointmentHistory():
 		try:
 			cursor.execute(f"SELECT * FROM appointment WHERE pat_id = {id};")
 			fetched_data = cursor.fetchall()
-			return jsonify(dict(zip(keys, fetched_data))), 200
+			return jsonify([dict(zip(keys, i)) for i in fetched_data]), 200
 		except:
 			return jsonify({"error" : "Data not found for given id!"}), 404
 	except:

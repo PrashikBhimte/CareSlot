@@ -47,7 +47,7 @@
     scale: 1.02;
 }
 
-#loginpage button {
+#loginpage button:active {
     scale: 0.98;
 }
 
