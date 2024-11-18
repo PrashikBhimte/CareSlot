@@ -1,0 +1,9 @@
+#history_div {
+    max-height: 600px;
+    overflow-y: scroll;
+    justify-content: flex-start;
+}
+
+#history_div ul{
+    width: 80%;
+}

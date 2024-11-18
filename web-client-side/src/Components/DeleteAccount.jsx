@@ -1,6 +1,7 @@
 import React from 'react';
 import "./DeleteAccount.css";
 import { useNavigate, useParams } from 'react-router-dom';
+import UserNav from './UserNav';
 
 export default function DeleteAccount() {
 
@@ -34,12 +35,13 @@ export default function DeleteAccount() {
     }
 
   return (
-    <div id='deleteaccount'>
-        <div id="confiromedelete">
+    <section>
+        <UserNav id={userId} />
+        <div className="center_div" id='deleteaccount'>
             <h2>Are you sure! you want to Delete Account</h2>
             <p><span>Note : </span>You won't be able to recover the account.</p>
             <button onClick={deleteAccount}>Delete</button>
         </div>
-    </div>
+    </section>
   )
 }

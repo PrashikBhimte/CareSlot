@@ -1,11 +1,11 @@
-#loginpage {
+/* #loginpage {
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+ */
 
 #loginbox {
     width: 90%;
@@ -19,6 +19,7 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    background-color: white;
 }
 
 #loginbox input {
@@ -30,59 +31,3 @@
     font-size: 16px;
 }
 
-#loginpage button {
-    width: 120px;
-    height: 40px;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    background-color: blue;
-    color: white;
-    font-size: 16px;
-}
-
-#loginpage button:hover {
-    scale: 1.02;
-}
-
-#loginpage button:active {
-    scale: 0.98;
-}
-
-.errorbox {
-    width: 400px;
-    height: 200px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    border-radius: 25px;
-    font-size: 24px;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: white;
-    box-shadow: 8px 8px 25px 1px black;
-}
-
-.errorbox button {
-    width: 120px;
-    height: 30px;
-    color: white;
-    border: none;
-    background-color: red;
-}
-
-.errorbox button:hover {
-    scale: 1.02;
-}
-
-.errorbox button:active {
-    scale: 0.98;
-}

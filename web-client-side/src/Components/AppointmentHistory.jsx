@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./AppointmentHistory.css";
 import { useNavigate, useParams } from 'react-router-dom';
+import UserNav from './UserNav';
 
 export default function AppointmentHistory() {
 
@@ -39,7 +40,9 @@ export default function AppointmentHistory() {
     }
 
     return (
-        <div id='appointmenthistory'>
+        <section id='appointmenthistory'>
+            <UserNav id={userId} />
+            <div className='center_div' id='history_div'>
             {history.length !== 0 ?
                 <ul id="showhistory">
                     {history.map((key) => { return <li><p>Date : {key['date']}</p> <p>Time Slot : {key['time_slot']}</p></li> })}
@@ -47,6 +50,7 @@ export default function AppointmentHistory() {
                     <p>There is no History!</p>
                     <button onClick={handleClose}>Close</button>
                 </div>}
-        </div>
+            </div>
+        </section>
     )
 }

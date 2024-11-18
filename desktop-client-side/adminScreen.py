@@ -34,7 +34,7 @@ def adminScreen():
     global root
 
     root = tk.Tk()
-    root.title("Hospital Management System PPMD")
+    root.title("Welcome to CareSLOT")
     root.attributes('-fullscreen', True)
 
     screen_width = root.winfo_width()

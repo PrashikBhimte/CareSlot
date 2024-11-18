@@ -1,4 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
 body {
     margin: 0;
     padding: 0;
+    font-size: 24px;
+    font-family: "Rajdhani", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    background: linear-gradient(135deg, rgb(93, 243, 93) 50%, white 50%);
+}
+
+button {
+    min-width: 120px;
+    height: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-bottom: 2px solid blue;
+    background-color: transparent;
+    color: black;
+    font-size: 16px;
+}
+
+button:hover {
+    scale: 1.02;
+}
+
+button {
+    scale: 0.98;
+}
+
+.errorbox {
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 25px;
+    font-size: 24px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    box-shadow: 8px 8px 25px 1px black;
+}
+
+.errorbox button {
+    background-color: red;
+}
+
+#useroptions {
+    width: 90vw;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    border-bottom: 2px solid blue;
+}
+
+#useroptions button {
+    font-size: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+input, textarea {
+    background-color: transparent;
+}
+
+section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+}
+
+.center_div {
+    width: 90%; 
+    height: auto;
+    max-width: 700px;
+    /* max-height: 500px; */
+    border-radius: 25px;
+    box-shadow: 8px 8px 25px 1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 50px 0; 
+}
+
+.center_div p {
+    width: 75%;
+    margin: 0;
+    padding: 0;
+    margin: 10px;
+}
+
+.center_div p span {
+    font-weight: bold;
+}
+
+select {
+    width: auto;
+    min-width: 50px;
+    height: 35px;
+    margin: 0 5px;
+    padding: 5px;
+    box-sizing: border-box;
 }

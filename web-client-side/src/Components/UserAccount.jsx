@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./UserAccount.css";
 import { useNavigate, useParams } from 'react-router-dom';
+import UserNav from './UserNav';
 
 export default function UserAccount() {
 
@@ -68,8 +69,9 @@ export default function UserAccount() {
   }
 
   return (
-    <div id='useraccount'>
-        <div id='useraccdetails' >
+    <section id='useraccount'>
+        <UserNav id={userId}/>
+        <div className='center_div' >
             <p><span>Name : </span>{name}</p>
             <p><span>Gender : </span>{gender}</p>
             <p><span>Date of Birth : </span>{dob}</p>
@@ -78,6 +80,6 @@ export default function UserAccount() {
             <p><span>Email : </span>{email}</p>
             <button onClick={handleClick}>Edit</button>
         </div>
-    </div>
+    </section>
   )
 }

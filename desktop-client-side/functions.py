@@ -12,4 +12,4 @@ def is_aplha_with_space(string):
 
 def initFrame(frame):
     clearFrame(frame)
-    tk.Label(frame, text="Welcome To PPMD application.", font=("Arial", 25)).pack(padx=150)
+    tk.Label(frame, text="Welcome to CareSLOT.", font=("Arial", 25)).pack(padx=150)

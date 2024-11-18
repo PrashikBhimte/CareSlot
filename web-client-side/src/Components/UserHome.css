@@ -1,39 +1,9 @@
-#userhome {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+#userhome h1 {
+    font-size: 64px;
+    font-family: "Caveat", cursive;
+    font-weight: 500;
+    font-style: normal;
+    font-optical-sizing: auto;
 }
 
-#useroptions {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: fixed;
-    right: 0;
-}
 
-#useroptions button {
-    width: 175px;
-    height: 50px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    background-color: blue;
-    color: white;
-    font-size: 16px;
-    padding: 0 10px;
-    box-sizing: border-box;
-}
-
-#useroptions button:hover {
-    scale: 1.02;
-}
-
-#useroptions button:active {
-    scale: 0.98;
-}

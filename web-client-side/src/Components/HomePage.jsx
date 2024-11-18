@@ -15,11 +15,18 @@ export default function HomePage() {
     }
 
   return (
-    <div id='homepage'>
+    <section id='homepage'>
         <div id="navbar">
-            <button onClick={handleLogin} >Login</button>
-            <button onClick={handlesignup} >Signup</button>
+            <p>CareSLOT</p>
+            <div>
+                <button onClick={handleLogin} >Login</button>
+                <button onClick={handlesignup} >Signup</button>
+            </div>
         </div>
-    </div>
+        <div id="homepage_contain">
+            <h1>Welcome To The CareSlot!</h1>
+            <p>Seamless Appointment Booking Platform.</p>
+        </div>
+    </section>
   )
 }

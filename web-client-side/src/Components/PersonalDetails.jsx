@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./PersonalDetails.css";
 import { useNavigate, useParams } from 'react-router-dom';
+import UserNav from "./UserNav";
 
 export default function PersonalDetails() {
 
@@ -147,7 +148,8 @@ export default function PersonalDetails() {
 
   return (
     <section id='personaldetails'>
-        <form id='personaldetailsform' >
+        <UserNav id={userId} />
+        <form id='personaldetailsform' className='center_div'>
             <label>
                 Name : <input type='text' value={name} name='name' onChange={changeName} required/>
             </label>
