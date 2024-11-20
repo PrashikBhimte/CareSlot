@@ -69,12 +69,11 @@ def send_otp(phone_no):
 
 @server.route('/')
 def home():
-	return "Welcome to HMS!"
+	return "Welcome to CareSlot!"
 
 @server.route('/login', methods=['POST'])
 def login():
 	data = dict(request.get_json())
-	print(data)
 	try: 
 		if data['role'] == 'doctor' :
 			cursor.execute(f"SELECT * FROM doctors_login;")
