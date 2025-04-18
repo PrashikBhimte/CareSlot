@@ -14,7 +14,6 @@ CORS(server,
 	origins="http://localhost:3000", 
 	methods=['POST', "GET", "DELETE"]
 )
-server.debug = True
 mysql_password = getenv('MYSQL_PASSWORD')
 twilio_account_sid = getenv('TWILIO_ACCOUNT_SID')
 twilio_auth_token = getenv('TWILIO_AUTH_TOKEN')
